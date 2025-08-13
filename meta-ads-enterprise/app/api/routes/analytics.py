@@ -8,7 +8,7 @@ from decimal import Decimal
 from app.core.database import get_sync_db
 from app.models.campaign import Campaign, CampaignMetrics
 from app.models.user import User
-from app.api.routes.auth import get_current_active_user
+from app.services.auth_service import get_current_user
 
 router = APIRouter()
 
@@ -48,7 +48,7 @@ class TimeSeriesData(BaseModel):
 async def get_analytics_overview(
     date_start: Optional[datetime] = Query(None),
     date_end: Optional[datetime] = Query(None),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_sync_db)
 ):
     if not date_end:
@@ -96,7 +96,7 @@ async def get_campaign_performance(
     date_start: Optional[datetime] = Query(None),
     date_end: Optional[datetime] = Query(None),
     limit: int = Query(10, ge=1, le=100),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_sync_db)
 ):
     if not date_end:
@@ -154,7 +154,7 @@ async def get_timeseries_data(
     date_start: Optional[datetime] = Query(None),
     date_end: Optional[datetime] = Query(None),
     campaign_id: Optional[str] = Query(None),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_sync_db)
 ):
     if not date_end:
@@ -219,7 +219,7 @@ async def get_timeseries_data(
 
 @router.get("/insights")
 async def get_insights(
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_sync_db)
 ):
     date_start = datetime.now() - timedelta(days=7)

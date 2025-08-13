@@ -131,5 +131,14 @@ CREATE TRIGGER update_users_updated_at BEFORE UPDATE ON users
 CREATE TRIGGER update_campaigns_updated_at BEFORE UPDATE ON campaigns
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
-INSERT INTO users (email, hashed_password, full_name, is_superuser) VALUES 
-('admin@metaads.com', '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewohqtdRhvNISXFK', 'Administrator', TRUE);
+INSERT INTO users (id, email, hashed_password, full_name, is_active, is_superuser, created_at, updated_at) 
+VALUES (
+    uuid_generate_v4(),
+    'admin@metaads.com',
+    '$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW',
+    'Administrador',
+    TRUE,
+    TRUE,
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
+) ON CONFLICT (email) DO NOTHING;

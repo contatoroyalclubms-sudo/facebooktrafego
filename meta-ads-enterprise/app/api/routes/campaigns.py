@@ -8,7 +8,7 @@ from decimal import Decimal
 from app.core.database import get_sync_db
 from app.models.campaign import Campaign, CampaignMetrics
 from app.models.user import User
-from app.api.routes.auth import get_current_active_user
+from app.services.auth_service import get_current_user
 from app.services.meta_ads import MetaAdsService
 
 router = APIRouter()
@@ -67,7 +67,7 @@ async def get_campaigns(
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=1000),
     status: Optional[str] = None,
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_sync_db)
 ):
     query = db.query(Campaign).filter(Campaign.user_id == current_user.id)
@@ -81,7 +81,7 @@ async def get_campaigns(
 @router.post("/", response_model=CampaignResponse)
 async def create_campaign(
     campaign_data: CampaignCreate,
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_sync_db)
 ):
     meta_ads_service = MetaAdsService(current_user.facebook_access_token)
@@ -117,7 +117,7 @@ async def create_campaign(
 @router.get("/{campaign_id}", response_model=CampaignResponse)
 async def get_campaign(
     campaign_id: str,
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_sync_db)
 ):
     campaign = db.query(Campaign).filter(
@@ -134,7 +134,7 @@ async def get_campaign(
 async def update_campaign(
     campaign_id: str,
     campaign_data: CampaignUpdate,
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_sync_db)
 ):
     campaign = db.query(Campaign).filter(
@@ -166,7 +166,7 @@ async def update_campaign(
 @router.delete("/{campaign_id}")
 async def delete_campaign(
     campaign_id: str,
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_sync_db)
 ):
     campaign = db.query(Campaign).filter(
@@ -195,7 +195,7 @@ async def get_campaign_metrics(
     campaign_id: str,
     date_start: Optional[datetime] = None,
     date_end: Optional[datetime] = None,
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_sync_db)
 ):
     campaign = db.query(Campaign).filter(
@@ -219,7 +219,7 @@ async def get_campaign_metrics(
 @router.post("/{campaign_id}/sync-metrics")
 async def sync_campaign_metrics(
     campaign_id: str,
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_sync_db)
 ):
     campaign = db.query(Campaign).filter(

@@ -9,7 +9,7 @@ import asyncio
 from app.core.database import get_sync_db
 from app.models.campaign import Campaign, CampaignMetrics, Alert
 from app.models.user import User
-from app.api.routes.auth import get_current_active_user
+from app.services.auth_service import get_current_user
 from app.core.cache import cache
 
 router = APIRouter()
@@ -66,7 +66,7 @@ manager = ConnectionManager()
 
 @router.get("/stats", response_model=DashboardStats)
 async def get_dashboard_stats(
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_sync_db)
 ):
     cache_key = f"dashboard_stats_{current_user.id}"
@@ -141,7 +141,7 @@ async def get_dashboard_stats(
 @router.get("/alerts", response_model=List[RecentAlert])
 async def get_recent_alerts(
     limit: int = 10,
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_sync_db)
 ):
     alerts = db.query(Alert).filter(
@@ -163,7 +163,7 @@ async def get_recent_alerts(
 @router.get("/campaigns/summary", response_model=List[CampaignSummary])
 async def get_campaigns_summary(
     limit: int = 5,
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_sync_db)
 ):
     today = datetime.now().date()
@@ -204,7 +204,7 @@ async def get_campaigns_summary(
 @router.post("/alerts/{alert_id}/mark-read")
 async def mark_alert_read(
     alert_id: str,
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_sync_db)
 ):
     alert = db.query(Alert).filter(
@@ -244,7 +244,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
 @router.get("/performance/realtime")
 async def get_realtime_performance(
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_sync_db)
 ):
     one_hour_ago = datetime.now() - timedelta(hours=1)
