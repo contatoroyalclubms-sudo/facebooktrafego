@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Decimal, DateTime, ForeignKey, Text, Boolean
+from sqlalchemy import Column, String, DateTime, ForeignKey, Text, Boolean, Numeric
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
@@ -14,8 +14,8 @@ class Campaign(Base):
     name = Column(String(255), nullable=False)
     objective = Column(String(100), nullable=False)
     status = Column(String(50), nullable=False, index=True)
-    daily_budget = Column(Decimal(10, 2))
-    total_budget = Column(Decimal(10, 2))
+    daily_budget = Column(Numeric(10, 2))
+    total_budget = Column(Numeric(10, 2))
     config_data = Column(JSONB)
     created_at = Column(DateTime(timezone=True), server_default=func.now(), index=True)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
@@ -30,16 +30,16 @@ class CampaignMetrics(Base):
     campaign_id = Column(String(255), ForeignKey("campaigns.campaign_id"))
     date_start = Column(DateTime(timezone=True), nullable=False, index=True)
     date_stop = Column(DateTime(timezone=True), nullable=False)
-    impressions = Column(Decimal(15, 0), default=0)
-    clicks = Column(Decimal(15, 0), default=0)
-    conversions = Column(Decimal(15, 0), default=0)
-    spend = Column(Decimal(10, 2), default=0)
-    cpm = Column(Decimal(10, 4), default=0)
-    ctr = Column(Decimal(10, 4), default=0)
-    roas = Column(Decimal(10, 4), default=0)
-    frequency = Column(Decimal(10, 4), default=0)
-    reach = Column(Decimal(15, 0), default=0)
-    cost_per_conversion = Column(Decimal(10, 2), default=0)
+    impressions = Column(Numeric(15, 0), default=0)
+    clicks = Column(Numeric(15, 0), default=0)
+    conversions = Column(Numeric(15, 0), default=0)
+    spend = Column(Numeric(10, 2), default=0)
+    cpm = Column(Numeric(10, 4), default=0)
+    ctr = Column(Numeric(10, 4), default=0)
+    roas = Column(Numeric(10, 4), default=0)
+    frequency = Column(Numeric(10, 4), default=0)
+    reach = Column(Numeric(15, 0), default=0)
+    cost_per_conversion = Column(Numeric(10, 2), default=0)
     created_at = Column(DateTime(timezone=True), server_default=func.now(), index=True)
 
     campaign = relationship("Campaign", back_populates="metrics")
@@ -69,8 +69,8 @@ class Optimization(Base):
     campaign_id = Column(String(255), nullable=False, index=True)
     optimization_type = Column(String(100), nullable=False)
     action_type = Column(String(100), nullable=False)
-    old_value = Column(Decimal(15, 4))
-    new_value = Column(Decimal(15, 4))
+    old_value = Column(Numeric(15, 4))
+    new_value = Column(Numeric(15, 4))
     reason = Column(Text)
     performance_before = Column(JSONB)
     performance_after = Column(JSONB)
@@ -85,7 +85,7 @@ class AIInsight(Base):
     title = Column(String(255), nullable=False)
     content = Column(Text, nullable=False)
     data = Column(JSONB)
-    confidence_score = Column(Decimal(3, 2))
+    confidence_score = Column(Numeric(3, 2))
     is_applied = Column(Boolean, default=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now(), index=True)
 

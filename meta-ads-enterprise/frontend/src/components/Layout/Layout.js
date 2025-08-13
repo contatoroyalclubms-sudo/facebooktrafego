@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Layout as AntLayout, Menu, Avatar, Dropdown, Badge, Button } from 'antd';
 import {
   DashboardOutlined,
-  CampaignOutlined,
+  FlagOutlined,
   BarChartOutlined,
   BellOutlined,
   SettingOutlined,
@@ -30,7 +30,7 @@ const Layout = ({ children }) => {
     },
     {
       key: '/campaigns',
-      icon: <CampaignOutlined />,
+      icon: <FlagOutlined />,
       label: 'Campanhas',
     },
     {

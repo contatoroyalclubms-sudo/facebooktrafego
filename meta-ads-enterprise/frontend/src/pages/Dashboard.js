@@ -5,7 +5,6 @@ import {
   ArrowDownOutlined,
   DollarOutlined,
   EyeOutlined,
-  ClickOutlined,
   ShoppingCartOutlined,
   ReloadOutlined,
 } from '@ant-design/icons';
@@ -139,7 +138,7 @@ const Dashboard = () => {
               title="Clicks Hoje"
               value={stats?.total_clicks_today || 0}
               formatter={(value) => formatNumber(value)}
-              prefix={<ClickOutlined />}
+              prefix={<EyeOutlined />}
             />
           </Card>
         </Col>
