@@ -1,0 +1,42 @@
+.App {
+  text-align: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.App-header {
+  background-color: #1877f2;
+  color: white;
+  padding: 40px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.App-header h1 {
+  margin: 0 0 10px 0;
+  font-size: 2.5rem;
+}
+
+.App-header p {
+  margin: 0;
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+.dashboard {
+  background-color: #f8f9fa;
+  padding: 30px;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.dashboard h2 {
+  color: #1877f2;
+  margin-bottom: 15px;
+}
+
+.dashboard p {
+  color: #6c757d;
+  font-size: 1.1rem;
+}
